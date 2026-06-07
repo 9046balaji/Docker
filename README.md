@@ -5,9 +5,6 @@
 ### A complete reference for learning infrastructure from physical servers to modern containers
 
 ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
-![Kubernetes](https://img.shields.io/badge/Kubernetes-326CE5?style=for-the-badge&logo=kubernetes&logoColor=white)
-![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)
-![Status](https://img.shields.io/badge/Status-Active-brightgreen?style=for-the-badge)
 ![Chapters](https://img.shields.io/badge/Chapters-6-orange?style=flat-square)
 ![Level](https://img.shields.io/badge/Level-Beginner%20to%20Advanced-blue?style=flat-square)
 
