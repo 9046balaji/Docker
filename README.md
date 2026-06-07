@@ -4,7 +4,10 @@
 
 ### A complete reference for learning infrastructure from physical servers to modern containers
 
+**Author:** Konda Balaji Rao
+
 ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+
 ![Chapters](https://img.shields.io/badge/Chapters-6-orange?style=flat-square)
 ![Level](https://img.shields.io/badge/Level-Beginner%20to%20Advanced-blue?style=flat-square)
 
