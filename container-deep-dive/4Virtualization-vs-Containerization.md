@@ -1,30 +1,45 @@
 # Virtualization vs Containerization
 
+## Table of Contents
+- [Physical Servers](#physical-servers)
+- [Virtual Machines](#virtual-machine-hypervisor)
+- [Containers](#containers)
+- [What is a Container?](#what-is-a-container)
+- [Containers vs Virtual Machines](#containers-vs-virtual-machines)
+- [Why Containers are Lightweight](#why-containers-are-lightweight)
+- [Container File System Structure](#files-and-folders-in-container-base-images)
+- [Host OS Integration](#files-and-folders-that-containers-use-from-the-host-os)
+- [Summary Comparison](#summary-comparison)
+
 This document compares different approaches to running applications: Physical Servers, Virtual Machines, and Containers.
 
 ---
 
 ## Physical Servers
 
-(1) We need to buy a server with 100 GB RAM, 100 CPUs, etc.
+In the traditional physical server approach:
 
-(2) We can only run one application on it.
+1. **Single Application Limitation:** We need to buy a server with 100 GB RAM, 100 CPUs, etc., but we can only run one application on it.
 
-(3) Because of this, we are not using the full resources of the server. We are wasting the RAM and CPU.
+2. **Resource Waste:** Because of this limitation, we are not using the full resources of the server. We end up wasting RAM and CPU capacity.
+
+3. **Low Efficiency:** This results in poor resource utilization and high costs per application.
 
 ---
 
 ## Virtual Machine (Hypervisor)
 
-(1) Virtualization is used to create virtual servers on top of the physical servers.
+Virtualization technology addresses the limitations of physical servers:
 
-(2) In this setup, we have a separate guest OS for every single virtual machine.
+1. **Virtual Server Creation:** Virtualization is used to create virtual servers on top of physical servers.
 
-(3) On top of that OS, we run our application.
+2. **Separate Operating Systems:** In this setup, we have a separate guest OS for every single virtual machine.
 
-(4) Instead of running just a single application on a physical server, we can create multiple VMs and run multiple applications simultaneously.
+3. **Application Isolation:** On top of each guest OS, we run our application.
 
-(5) They are very secure even though they are running on a single physical server, because there is a completely separate OS for every application.
+4. **Multiple Applications:** Instead of running just a single application on a physical server, we can create multiple VMs and run multiple applications simultaneously.
+
+5. **Security Benefits:** VMs are very secure even though they run on a single physical server, because there is a completely separate OS for every application.
 
 ```text
        25          25          25          25  <-- (Resource Division)
@@ -41,17 +56,21 @@ This document compares different approaches to running applications: Physical Se
   |_______________________________________________|
 ```
 
-(6) Even though we split the physical server and are running multiple applications instead of just one, we are still not fully utilizing the resources of the VM.
+### Virtual Machine Limitations
 
-(7) This underutilization causes heavy financial losses to organizations.
+6. **Underutilization Problem:** Even though we split the physical server and run multiple applications instead of just one, we are still not fully utilizing the resources of each VM.
 
-(8) This happens because every single VM must run a full, heavy guest operating system.
+7. **Financial Impact:** This underutilization causes heavy financial losses to organizations.
+
+8. **Root Cause:** This happens because every single VM must run a full, heavy guest operating system.
 
 ---
 
 ## Containers
 
-### Model-1: Bare Metal Deployment (On-Premise)
+Containers provide a more efficient solution to application deployment and resource utilization.
+
+### Model 1: Bare Metal Deployment (On-Premise)
 
 ```text
  ___________________________________________
@@ -65,7 +84,7 @@ This document compares different approaches to running applications: Physical Se
 |___________________________________________|
 ```
 
-### Model-2: Cloud Provider Deployment (Virtualized)
+### Model 2: Cloud Provider Deployment (Virtualized)
 
 ```text
  ___________________________________________
@@ -83,17 +102,15 @@ This document compares different approaches to running applications: Physical Se
 
 ### Container Characteristics
 
-(1) Containers are **lightweight**.
+1. **Lightweight Design:** Containers are **lightweight** because they do not contain a full, heavy operating system.
 
-(2) They are lightweight because they do not contain a full, heavy operating system.
+2. **Resource Sharing:** Instead, containers pull resources directly from the underlying virtual machine or physical server they are running on. They share the libraries and dependencies of the **Host Operating System**.
 
-(3) Instead, containers pull resources directly from the underlying virtual machine or physical server they are running on. They share the libraries and dependencies of the **Host Operating System**.
+3. **Standard Package:** A container is simply a standard package containing:
 
-(4) A container is simply a standard package containing:
+   **Container Package = Application + Libraries + System Dependencies**
 
-**Container Package = Application + Libraries + System Dependencies**
-
-(5) Because of this design, they are incredibly easy to ship, deploy, and move across different environments.
+4. **Portability:** Because of this design, they are incredibly easy to ship, deploy, and move across different environments.
 
 > **Important Note:** Containers are **ephemeral** in nature, meaning they are short-lived. A container does not have its own permanent file system because it is lightweight.
 > 
@@ -126,27 +143,31 @@ Containers and virtual machines are both technologies used to isolate applicatio
      '---------------------------'            '---------------------------'
 ```
 
-### (1) Resource Utilization
+### Resource Utilization
 
-* **Containers:** Share the host operating system kernel, making them significantly lighter and faster than VMs.
-* **VMs:** Have a full-fledged guest OS and run on top of a hypervisor, making them much more resource-intensive.
+**Containers:** Share the host operating system kernel, making them significantly lighter and faster than VMs.
 
-### (2) Portability
+**VMs:** Have a full-fledged guest OS and run on top of a hypervisor, making them much more resource-intensive.
 
-* **Containers:** Designed to be highly portable. They can run smoothly on any system that has a compatible host operating system.
-* **VMs:** Less portable because they require a specific compatible hypervisor layer to be installed on the destination environment to run.
+### Portability
 
-### (3) Security
+**Containers:** Designed to be highly portable. They can run smoothly on any system that has a compatible host operating system.
 
-* **Containers:** Share the host kernel, which means they have slightly lower isolation boundaries compared to VMs.
-* **VMs:** Provide a higher level of security because each VM has its own independent operating system, providing a completely isolated environment from the host and other VMs.
+**VMs:** Less portable because they require a specific compatible hypervisor layer to be installed on the destination environment to run.
 
-*Note: Containers provide slightly less isolation, as they share the host operating system kernel.*
+### Security
 
-### (4) Management
+**Containers:** Share the host kernel, which means they have slightly lower isolation boundaries compared to VMs.
 
-* **Containers:** Managing containers is typically much easier than managing VMs because containers are designed to be lightweight and fast-moving.
-* **VMs:** Managing VMs involves higher overhead because you have to maintain, patch, and update the full guest operating system for every single instance.
+**VMs:** Provide a higher level of security because each VM has its own independent operating system, providing a completely isolated environment from the host and other VMs.
+
+> **Note:** Containers provide slightly less isolation, as they share the host operating system kernel.
+
+### Management
+
+**Containers:** Managing containers is typically much easier than managing VMs because containers are designed to be lightweight and fast-moving.
+
+**VMs:** Managing VMs involves higher overhead because you have to maintain, patch, and update the full guest operating system for every single instance.
 
 ---
 
@@ -182,21 +203,21 @@ Inside a standard container base image, you will find a minimal Linux directory 
 |                   RUNNING CONTAINER                    |
 |  [ Isolated Processes ]      [ App Code & Libraries ]  |
  '-----------+----------------------------+--------------'
-                 |                            |
-                 | (System Calls)             | (Namespaces & cgroups)
-                 v                            v
+             |                            |
+             | (System Calls)             | (Namespaces & cgroups)
+             v                            v
  ________________________________________________________
 |                        HOST OS                         |
 |  ====================================================  |
-|       Linux Kernel (Handles Syscalls, CPU, RAM, I/O)   |
+|       Linux Kernel (Handles Syscalls, CPU, RAM, I/O)  |
 |  ====================================================  |
-|   [ Namespaces ]   [ cgroups ]   [ Bind Mounts ]       |
-|   (Isolation)      (Resource     (Host File            |
-|                    Limiting)      System)              |
+|   [ Namespaces ]   [ cgroups ]   [ Bind Mounts ]      |
+|   (Isolation)      (Resource     (Host File           |
+|                    Limiting)      System)             |
 |________________________________________________________|
 ```
 
-### The Host's File System
+### Host File System Access
 
 Docker containers can access the host file system using **bind mounts**, which allow the container to read and write files directly in the host file system.
 
@@ -210,17 +231,23 @@ The host's kernel handles all system calls coming from the container. This is ex
 
 ### Namespaces
 
-Docker containers use **Linux namespaces** to create highly isolated environments for the container's processes. Namespaces provide clean isolation for crucial resources such as the file system mounts, process IDs (PID), and network interfaces.
+Docker containers use **Linux namespaces** to create highly isolated environments for the container's processes. Namespaces provide clean isolation for crucial resources such as:
+- File system mounts
+- Process IDs (PID) 
+- Network interfaces
 
 ### Control Groups (cgroups)
 
-Docker containers use **cgroups** to limit and control the exact amount of hardware resources—such as CPU, memory, and disk I/O—that a specific container can access so it doesn't crash the whole host.
+Docker containers use **cgroups** to limit and control the exact amount of hardware resources that a specific container can access. This includes:
+- CPU usage
+- Memory allocation
+- Disk I/O
 
----
+This prevents any single container from crashing the whole host system.
 
-## Important Notes
+### Important Isolation Notes
 
-* It is important to note that while a container uses resources directly from the host OS, it is still completely isolated from both the host and other containers. Therefore, any changes made inside the container do not affect the host or other running containers.
+It is important to note that while a container uses resources directly from the host OS, it is still completely isolated from both the host and other containers. Therefore, any changes made inside the container do not affect the host or other running containers.
 
 > **Note:** There are multiple ways to reduce your VM image size.
 
