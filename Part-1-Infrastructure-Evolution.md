@@ -9,13 +9,13 @@ This document explains how companies solved the problem of running multiple appl
 1. [Prerequisites](#prerequisites)
 2. [Initial Infrastructure Setup](#initial-infrastructure-setup)
 3. [Business Growth & Infrastructure Challenges](#business-growth--infrastructure-challenges)
-4. [Virtualization Solutions](#virtualization-solutions)
-5. [Cost Analysis](#cost-analysis)
+4. [Virtualization Solutions](#virtualization-solutions-the-smart-answer)
+5. [Cost Analysis](#cost-analysis-why-this-matters)
 6. [Next Steps](#next-steps)
 
 ---
 
-## 🛑 Prerequisites
+## Prerequisites
 
 Before reading this document, you should understand:
 
@@ -27,7 +27,7 @@ Don't worry if you're new to these - we'll explain everything step by step!
 
 ---
 
-## 🏗️ Initial Infrastructure Setup
+## Initial Infrastructure Setup
 
 ### Basic Server Configuration
 
@@ -66,7 +66,7 @@ When users access the deployed application via web browser, the traffic follows 
 
 ---
 
-## 🚀 Business Growth & Infrastructure Challenges
+## Business Growth & Infrastructure Challenges
 
 ### Real-World Example: A Growing Streaming Company
 
@@ -156,9 +156,7 @@ The traditional way companies solved this was simple but expensive:
 
 ---
 
----
-
-## 💡 Virtualization Solutions: The Smart Answer
+## Virtualization Solutions: The Smart Answer
 
 ### What is Virtualization?
 
@@ -244,7 +242,7 @@ While VMs solved the isolation problem, they created a new issue: **Resource Was
 
 ---
 
-## � Cost Analysis: Why This Matters
+## Cost Analysis: Why This Matters
 
 ### Monthly Cost Comparison (Real Numbers)
 
@@ -266,7 +264,7 @@ Let's say StreamFlix wants to run 20 different applications:
 
 ---
 
-## 🎯 Next Steps
+## Next Steps
 
 This document covered **Part 1** of our infrastructure journey:
 1. ✅ **The Problem:** Multiple apps, different requirements

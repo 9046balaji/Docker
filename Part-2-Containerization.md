@@ -17,7 +17,7 @@ This document explains how containers solved the resource waste problem from vir
 
 ---
 
-## 🔄 Quick Review
+## Quick Review
 
 In Part 1, we learned:
 - **The Problem:** Can't run multiple apps with different requirements on one server
@@ -39,7 +39,7 @@ In Part 1, we learned:
 
 ---
 
-## 🐳 What Are Containers?
+## What Are Containers?
 
 ### Simple Explanation
 
@@ -82,7 +82,7 @@ Containers share the main computer's operating system but keep applications comp
 
 ---
 
-## ⚙️ How Containers Work
+## How Containers Work
 
 ### Container Images: The Recipe
 
@@ -109,28 +109,22 @@ A container image is like a recipe that includes:
 
 ---
 
-## 📊 Performance Comparison
+## Performance Comparison
 
-### ⚡ Containers vs Virtual Machines: The Key Differences
+### ⚡ VMs vs Containers: Complete Comparison
 
-| What | Virtual Machines | Containers | Why It Matters |
-|------|-----------------|------------|----------------|
-| **Operating System** | Each VM has full OS | All share one OS | Containers save 3-4GB per app |
-| **Startup Speed** | 45 seconds - 3 minutes | 1-2 seconds | Faster scaling and deployment |
-| **File Size** | 20-80 GB | 50-500 MB | Faster downloads and updates |
-| **Memory Usage** | 4+ GB minimum | 5-50 MB typical | Fit 10x more apps per server |
-| **Isolation** | Hardware-level | Process-level | Both are secure, containers are lighter |
+| Metric | Virtual Machines | Containers | Why It Matters / Winner |
+|--------|-----------------|------------|-------------------------|
+| **Operating System** | Each VM has full OS | All share one OS | **🐳 Containers:** Save 3-4GB RAM per app |
+| **Startup Speed** | 45 seconds - 3 minutes | 1-2 seconds | **🐳 Containers:** Near-instant scaling |
+| **File Size** | 20-80 GB | 50-500 MB | **🐳 Containers:** Fast downloads & updates |
+| **Memory Usage** | 4+ GB minimum | 5-50 MB typical | **🐳 Containers:** Fit 10x more apps per server |
+| **Isolation** | Hardware-level | Process-level | **Both secure:** Containers are lighter |
+| **Apps per Server** | 5-10 VMs | 50-200 containers | **🐳 Containers:** Much higher density |
 
 **Simple Analogy:**
 - **VMs** = Each tenant gets their own house with everything
 - **Containers** = Tenants share a building but have private, secure rooms
-
-| Metric | Virtual Machines | Containers | Winner |
-|--------|-----------------|------------|---------|
-| **Startup Time** | 45 seconds - 3 minutes | **1-2 seconds** | 🐳 Containers |
-| **File Size** | 20-80 GB | **50-500 MB** | 🐳 Containers |
-| **Memory Usage** | 4 GB minimum | **5-50 MB** | 🐳 Containers |
-| **Apps per Server** | 5-10 VMs | **50-200 containers** | 🐳 Containers |
 
 ### Real Cost Example
 
@@ -145,7 +139,7 @@ A container image is like a recipe that includes:
 
 ---
 
-## 🐋 Docker: Containers Made Easy
+## Docker: Container Made Easy
 
 ### What is Docker?
 
@@ -189,7 +183,7 @@ docker run my-streaming-app
 
 ---
 
-## ☸️ Kubernetes: Managing Many Containers
+## Kubernetes: Managing Many Containers
 
 ### The Container Traffic Problem
 
@@ -265,15 +259,9 @@ Many students get confused about this, so let's be crystal clear:
 4. **Updates:** Update all containers with zero downtime
 5. **Service Discovery:** Helps containers find and talk to each other
 
-1. **Auto-healing:** Container crashes? K8s starts a new one in 2 seconds
-2. **Load Balancing:** Spreads traffic across healthy containers  
-3. **Scaling:** Need more power? K8s creates 100 more containers instantly
-4. **Updates:** Update all containers with zero downtime
-5. **Service Discovery:** Helps containers find and talk to each other
-
 ---
 
-## 🌍 Real-World Examples
+## Real-World Examples
 
 ### Netflix (Streaming Giant)
 - **Containers:** 700,000+ containers running simultaneously
@@ -292,7 +280,7 @@ Many students get confused about this, so let's be crystal clear:
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Option 1: Try Docker (Beginner)
 1. **Install Docker Desktop** (free, works on Windows/Mac/Linux)
@@ -319,7 +307,7 @@ Many students get confused about this, so let's be crystal clear:
 
 ---
 
-## 🎯 Summary
+## Summary
 
 ### The Evolution Journey
 1. **Physical Servers:** One app per expensive server (wasteful)
@@ -349,7 +337,7 @@ Many students get confused about this, so let's be crystal clear:
 
 ---
 
-## 📖 Additional Resources
+## Additional Resources
 
 - **Docker Official Tutorial:** https://www.docker.com/101-tutorial
 - **Kubernetes Basics:** https://kubernetes.io/docs/tutorials/
