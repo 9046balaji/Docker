@@ -9,6 +9,7 @@
 ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 
 ![Chapters](https://img.shields.io/badge/Chapters-6-orange?style=flat-square)
+![Commands](https://img.shields.io/badge/Command%20Guides-11-brightgreen?style=flat-square)
 ![Level](https://img.shields.io/badge/Level-Beginner%20to%20Advanced-blue?style=flat-square)
 
 </div>
@@ -122,6 +123,91 @@ This repository contains a **multi-part learning series** that explains:
 
 ---
 
+### Part 3: Installation
+
+| | |
+|---|---|
+| 📘 **Topic** | Docker Installation Across All Platforms |
+| 🎯 **Level** | Beginner |
+| ⏱️ **Read Time** | 10 minutes |
+
+#### [🛠️ Installation Guide](./Installation.md)
+- Docker Desktop for Windows (GUI + WSL 2)
+- Bare-metal Docker Engine inside WSL 2
+- Ubuntu / Debian, CentOS / RHEL, and macOS installation
+- Post-installation verification steps
+
+---
+
+### Part 4: Docker Commands Reference
+
+| | |
+|---|---|
+| 📘 **Topic** | Comprehensive Docker Command Guides with ASCII Diagrams |
+| 🎯 **Level** | Beginner to Intermediate |
+| ⏱️ **Read Time** | 60–75 minutes (all guides) |
+
+#### [🐳 01 — Images & Run Basics](./Commands/01-Images-and-Run-Basics.md)
+- Pulling images, listing, inspecting, and tagging
+- Running containers with common flags (`-d`, `-p`, `-v`, `-it`)
+- Port mapping flow and image tagging concepts
+
+#### [🔄 02 — Container Lifecycle](./Commands/02-Container-Lifecycle.md)
+- Start, stop, restart, and remove containers
+- Container state diagram (Created → Running → Stopped → Removed)
+- Logs, inspection, exec, and file copy between host and container
+
+#### [🔍 03 — Debugging & Inspection](./Commands/03-Debugging-and-Inspection.md)
+- Debugging workflow: logs → inspect → stats → exec → debug
+- Targeted inspection with format flags
+- Docker Debug tool for distroless images
+- Port, network, and connectivity testing
+
+#### [⚡ 04 — Development Workflows](./Commands/04-Development-Workflows.md)
+- Interactive development containers with volume mounts
+- Live source mounts for real-time development
+- Rebuilding and selective service restarts
+
+#### [🐙 05 — Docker Compose](./Commands/05-Docker-Compose.md)
+- Multi-container application management
+- Scaling services with load distribution
+- Multi-stage builds for development and production
+- Networking across Compose services
+
+#### [🌐 06 — Networking Fundamentals](./Commands/06-Networking-Fundamentals.md)
+- Docker networks, bridge drivers, and DNS resolution
+- Network modes comparison: none vs host vs bridge
+- Port mapping vs internal container networking
+- IPAM and cross-network container communication
+
+#### [🔗 07 — Cross-Network Communication](./Commands/07-Cross-Network-Communication.md)
+- Multi-network attachment for reverse proxy setups
+- Solving bridge network isolation problems
+- Practical example: connecting containers across networks
+
+#### [🌍 08 — Real-World Examples](./Commands/08-Real-World-Examples.md)
+- Custom networks with subnet and gateway configuration
+- MySQL database deployment with environment variables
+- Web app connected to a database container
+- Private Docker registry setup and persistent storage
+
+#### [📤 09 — Registry Operations](./Commands/09-Registry-Operations.md)
+- Login, tag, push, and pull workflow
+- Docker Hub features and capabilities
+- Private registries: ECR, GCR, ACR, Harbor, GHCR
+
+#### [🧹 10 — System Maintenance](./Commands/10-System-Maintenance.md)
+- Disk usage monitoring (`docker system df`)
+- System-wide and targeted cleanup commands
+- Understanding dangling vs unused images
+
+#### [💾 11 — Volumes & Mounts](./Commands/11-Volumes-and-Mounts.md)
+- Named volumes, bind mounts, and tmpfs mounts
+- Data persistence across container restarts
+- The `--mount` syntax vs `-v` flag
+
+---
+
 ## 🎯 Learning Path
 
 <div align="center">
@@ -134,6 +220,8 @@ This repository contains a **multi-part learning series** that explains:
 | 4 | [Virtualization vs Containerization](./container-deep-dive/4Virtualization-vs-Containerization.md) | 🟡 Intermediate | 15 min |
 | 5 | [Docker Engine, Storage & Networking](./container-deep-dive/5Docker-Engine-Storage-and-Networking.md) | 🟡 Intermediate | 20 min |
 | 6 | [Advanced Optimization & Security](./container-deep-dive/6Advanced-Optimization-and-Security.md) | 🔴 Advanced | 20 min |
+| 7 | [Installation Guide](./Installation.md) | 🟢 Beginner | 10 min |
+| 8 | [Commands Reference (01–11)](./Commands/01-Images-and-Run-Basics.md) | 🟢–🟡 Mixed | 60 min |
 
 </div>
 
@@ -144,6 +232,8 @@ flowchart LR
     C --> D["4️⃣ VMs vs Containers"]
     D --> E["5️⃣ Docker Engine & Networking"]
     E --> F["6️⃣ Advanced Optimization"]
+    F --> G["🛠️ Installation"]
+    G --> H["📋 Commands Reference"]
 ```
 
 ---
@@ -164,14 +254,16 @@ flowchart LR
 ```bash
 # Step 1: Read Part 1 first — it explains the fundamental problems
 # Step 2: Then move to Part 2 for modern solutions
-# Step 3: Try the Docker examples in Part 2
+# Step 3: Install Docker using the Installation Guide
+# Step 4: Try the commands in the Commands Reference
 ```
 
 **Already know VMs?**
 ```bash
 # Step 1: Skip to Part 2 for containerization
-# Step 2: Focus on the VM vs Container comparison
-# Step 3: Try Kubernetes after mastering Docker
+# Step 2: Install Docker and follow the Installation Guide
+# Step 3: Work through the Commands Reference (01–11)
+# Step 4: Focus on Compose, Networking, and Volumes
 ```
 
 > [!TIP]
@@ -187,6 +279,7 @@ The guide includes:
 - 🏢 **Enterprise examples** from Netflix, Spotify
 - 💻 **Hands-on Docker commands** you can try immediately
 - 🔗 **Links to free online playgrounds** for practice
+- 🎨 **ASCII diagrams** for visual understanding of concepts
 
 ---
 
@@ -199,6 +292,10 @@ The guide includes:
 **Part 2 Prerequisites:**
 - Complete Part 1 or equivalent VM knowledge
 - Basic command line familiarity (helpful but not required)
+
+**Commands Reference Prerequisites:**
+- Docker installed on your machine ([Installation Guide](./Installation.md))
+- Basic command line familiarity
 
 ---
 
