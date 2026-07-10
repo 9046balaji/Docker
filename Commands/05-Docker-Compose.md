@@ -80,6 +80,24 @@ This command creates 3 separate container instances (replicas) of the `web` serv
 |_________________________________________|
 ```
 
+```text
+ _________________________________________________
+|           LOAD DISTRIBUTION WITH SCALING         |
+|                                                  |
+|                  [ User Traffic ]                 |
+|                       |                          |
+|                       v                          |
+|              [ Load Balancer ]                   |
+|              /       |       \                   |
+|             v        v        v                  |
+|         [ web-1 ] [ web-2 ] [ web-3 ]            |
+|            |         |         |                 |
+|            +----+----+----+----+                 |
+|                 |              |                 |
+|            [ database ]  [ redis ]               |
+|__________________________________________________|
+```
+
 ### When to Scale
 
 * Many users are accessing the application simultaneously
