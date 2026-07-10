@@ -80,6 +80,18 @@
 
 ## 📁 Copy Files Between Host and Container
 
+```text
+ _______________________________________________
+|          FILE COPY DIRECTIONS                 |
+|                                               |
+|   HOST  ---- docker cp local container --->   |
+|              CONTAINER                        |
+|                                               |
+|   HOST  <--- docker cp container local ----   |
+|              CONTAINER                        |
+|_______________________________________________|
+```
+
 * **`docker container cp ./local/file.txt webserver:/app/`** → Copies a file from the host machine into the container at the specified path.
 * **`docker cp webserver:/app/file.txt local.txt`** → Copies a file from inside the container to the host machine.
 
