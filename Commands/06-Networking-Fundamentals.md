@@ -115,6 +115,24 @@ ping db    # Works automatically — Docker DNS resolves "db" to its IP address
 
 Docker supports three network modes, each providing a different level of isolation:
 
+```text
+ ___________________________________________________________________
+|                    NETWORK MODES COMPARISON                       |
+|                                                                   |
+|   --network none        --network host       --network bridge     |
+|   +-------------+       +-------------+      +-------------+     |
+|   | Container   |       | Container   |      | Container   |     |
+|   |             |       |             |      |             |     |
+|   | No network  |       | Shares host |      | Private IP  |     |
+|   | No internet |       | ports & IPs |      | Own subnet  |     |
+|   | Loopback    |       | No isolation|      | DNS access  |     |
+|   | only        |       |             |      |             |     |
+|   +-------------+       +------+------+      +------+------+     |
+|         X                      |                    |             |
+|     (isolated)           HOST NETWORK          BRIDGE NETWORK     |
+|___________________________________________________________________|
+```
+
 ### None Network (Complete Isolation)
 
 ```bash
