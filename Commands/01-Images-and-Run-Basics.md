@@ -1,51 +1,132 @@
-## Commands
+<div align="center">
+  <h1>🐳 Docker Images and Run Basics</h1>
+  <p><strong>Essential commands for pulling images, running containers, and managing tags</strong></p>
+  <img src="https://img.shields.io/badge/Level-Beginner-green?style=flat-square" />
+  <img src="https://img.shields.io/badge/Read%20Time-8%20minutes-blue?style=flat-square" />
+  <img src="https://img.shields.io/badge/Section-01%20of%2011-orange?style=flat-square" />
+</div>
 
-* **`docker version`** $\rightarrow$ Verifies that Docker is installed and that both the client and the server/engine are available.
-* **`docker info`** $\rightarrow$ Gives a deeper summary of the local Docker setup, including plugins and engine details.
-* **`docker images`** or **`docker image ls`** $\rightarrow$ Lists available images stored locally on our machine.
-* **`docker pull ubuntu:latest`** or **`docker image pull nginx`** $\rightarrow$ Downloads an image from a registry. If we do not specify a tag, Docker assumes `latest`. If we do not specify a registry, Docker assumes and uses Docker Hub.
-* *Example:* `docker pull ubuntu` or `docker pull alpine` $\rightarrow$ Pulls the latest images from Docker Hub.
+---
 
+## 📚 Table of Contents
 
-* **`docker images -q`** $\rightarrow$ Prints only image IDs instead of the full table.
-* **`docker images --digests`** $\rightarrow$ Shows the digest of images. A digest is a unique SHA256 hash that identifies the exact image content.
+1. [Docker Environment Info](#-docker-environment-info)
+2. [Pulling Images](#-pulling-images)
+3. [Listing and Inspecting Images](#-listing-and-inspecting-images)
+4. [Running Containers](#-running-containers)
+5. [Image Tagging](#-image-tagging)
+6. [Port Mapping and Options](#-port-mapping-and-options)
 
-> **Note:** Today, version 24.5 might be the `latest` with a normal ID. When we pull it, it will download the latest version. However, later when we try that again in production, the `latest` version may point to 25.2, so it can cause trouble.
+---
 
-The SHA256 hash is different for everything.
+## 🔍 Docker Environment Info
 
+* **`docker version`** → Verifies that Docker is installed and displays both the client and engine versions.
+* **`docker info`** → Provides a detailed summary of the local Docker setup, including plugins, storage drivers, and engine details.
 
+---
 
-* **`docker image inspect <name>`** or **`docker inspect <image>`** $\rightarrow$ Shows detailed metadata about an image.
-* **`docker run`** $\rightarrow$ Creates a new container from an image (pulls the image if it is missing). It creates and starts the container.
-* **`docker container ls`** or **`docker ps`** $\rightarrow$ Shows running containers only.
-* **`docker ps -a`** $\rightarrow$ Shows all containers, including stopped ones.
-* **`docker start nginx`** $\rightarrow$ Once a container is run and we assign the name `nginx` to it, we can run it using `docker start nginx`. It is used to run only existing containers.
-* Running **`docker run -d nginx`** twice $\rightarrow$ Creates 2 separate containers, both created from the same `nginx` image.
-* **`-d`** $\rightarrow$ Detached run (meaning the containers run in the background).
-* **`--name "name"`** $\rightarrow$ Assigns a name while running so we can use that name to start or stop the container.
-* **`docker image tag nginx myregistry/nginx:v1.0`** $\rightarrow$ Creates another reference/tag pointing to the same image ID (both point to the same image ID).
-* **Why tags are used:**
-* Mainly for versioning
-* Pushing to registries
-* CI/CD pipelines
-* Environment separation
+## 📥 Pulling Images
 
-* **`docker rmi myregistry/nginx:v1`** $\rightarrow$ This removes only the tag reference.
-* **Actual image is deleted only when:**
-* No tags remain
-* No containers use it
+```text
+ _______________________________________________
+|              IMAGE PULL WORKFLOW              |
+|                                               |
+|   [ Registry ]  --->  [ Local Storage ]       |
+|   (Docker Hub)        (docker images)         |
+|                                               |
+|   docker pull ubuntu:latest                   |
+|       |                                       |
+|       +--> Downloads all layers               |
+|       +--> Stores image locally               |
+|_______________________________________________|
+```
 
+* **`docker pull ubuntu:latest`** or **`docker image pull nginx`** → Downloads an image from a registry. If no tag is specified, Docker defaults to `latest`. If no registry is specified, Docker uses Docker Hub.
+  * *Example:* `docker pull ubuntu` or `docker pull alpine` → Pulls the latest images from Docker Hub.
 
-* **`docker run -d --name nginx -p 8080:80 nginx`**
-* **`-d`**: Run in detached mode (background)
-* **`--name`**: Assign container name
-* **`-p 8080:80`**: Map port (host:container)
-* **`-e VAR=val`**: Set environment variables
-* **`-v /host:/container`**: Mount volumes
-* **`-it`**: Interactive terminal
+> [!WARNING]
+> **Avoid using `latest` in production.** Today, version 24.5 might be tagged as `latest`. But when you deploy later, `latest` may point to version 25.2, potentially causing unexpected breaking changes. Always use a specific version tag for production environments (e.g., `nginx:1.25`).
 
+---
 
-* **`docker run -it ubuntu bash`** $\rightarrow$ Run in an interactive shell
-* Acts like an Ubuntu OS
+## 📋 Listing and Inspecting Images
 
+* **`docker images`** or **`docker image ls`** → Lists all images stored locally on your machine.
+* **`docker images -q`** → Prints only the image IDs instead of the full table.
+* **`docker images --digests`** → Displays the digest (a unique SHA256 hash) of each image. This hash uniquely identifies the exact image content, ensuring you are running precisely the version you expect.
+
+> [!NOTE]
+> The SHA256 digest is unique for every image version. Two images with the same tag but different digests contain different content.
+
+* **`docker image inspect <name>`** or **`docker inspect <image>`** → Displays detailed metadata about an image, including its layers, configuration, environment variables, and architecture.
+
+---
+
+## ▶️ Running Containers
+
+* **`docker run`** → Creates a new container from an image. If the image is not available locally, Docker pulls it automatically before starting the container.
+* **`docker container ls`** or **`docker ps`** → Shows only the currently running containers.
+* **`docker ps -a`** → Shows all containers, including stopped ones.
+
+* **`docker start nginx`** → Starts an existing, previously created container named `nginx`. This command only works with containers that have already been created using `docker run`.
+
+> [!IMPORTANT]
+> Running `docker run -d nginx` twice creates **two separate containers** from the same `nginx` image. Each container is an independent instance with its own filesystem, network, and process space.
+
+### Common `docker run` Flags
+
+| Flag | Description |
+|------|-------------|
+| `-d` | Run in detached mode (container runs in the background) |
+| `--name "name"` | Assign a custom name to the container |
+| `-p 8080:80` | Map a host port to a container port (host:container) |
+| `-e VAR=val` | Set an environment variable inside the container |
+| `-v /host:/container` | Mount a host directory as a volume in the container |
+| `-it` | Open an interactive terminal session |
+
+* **`docker run -it ubuntu bash`** → Launches an Ubuntu container with an interactive bash shell. This gives you a terminal environment that behaves like a standalone Ubuntu system.
+
+---
+
+## 🏷️ Image Tagging
+
+* **`docker image tag nginx myregistry/nginx:v1.0`** → Creates an additional reference (tag) pointing to the same image ID. Both the original and the new tag reference identical image data.
+
+**Common use cases for tagging:**
+* Versioning images (e.g., `v1.0`, `v2.0`)
+* Preparing images for push to a registry
+* Differentiating images in CI/CD pipelines
+* Separating images by environment (e.g., `dev`, `staging`, `prod`)
+
+* **`docker rmi myregistry/nginx:v1`** → Removes only the specified tag reference.
+
+> [!NOTE]
+> The actual image data is deleted only when **no tags** reference it and **no containers** are using it.
+
+---
+
+## 🔌 Port Mapping and Options
+
+```bash
+docker run -d --name nginx -p 8080:80 nginx
+```
+
+| Option | Purpose |
+|--------|---------|
+| `-d` | Run in detached mode (background) |
+| `--name` | Assign a name to the container |
+| `-p 8080:80` | Map host port 8080 to container port 80 |
+| `-e VAR=val` | Set environment variables |
+| `-v /host:/container` | Mount volumes |
+| `-it` | Interactive terminal |
+
+---
+
+<div align="center">
+
+| ⬅️ Previous | 🏠 Home | Next ➡️ |
+|:---:|:---:|:---:|
+| [Installation](../Installation.md) | [README](../README.md) | [Container Lifecycle](./02-Container-Lifecycle.md) |
+
+</div>
