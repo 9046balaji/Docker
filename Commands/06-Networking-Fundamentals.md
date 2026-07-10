@@ -1,131 +1,215 @@
-## Docker Networking
-
-A Docker network is a virtual private network created by Docker for container communication.
-
-It allows containers to:
-
-* Talk to each other
-* Isolate traffic
-* Expose services
-* Use DNS-based discovery
+<div align="center">
+  <h1>🌐 Docker Networking Fundamentals</h1>
+  <p><strong>Understanding Docker networks, bridge drivers, DNS resolution, and port mapping</strong></p>
+  <img src="https://img.shields.io/badge/Level-Intermediate-yellow?style=flat-square" />
+  <img src="https://img.shields.io/badge/Read%20Time-10%20minutes-blue?style=flat-square" />
+  <img src="https://img.shields.io/badge/Section-06%20of%2011-orange?style=flat-square" />
+</div>
 
 ---
 
-### Without Network
+## 📚 Table of Contents
 
-Containers are isolated; they cannot talk to each other.
-
----
-
-### `docker network create mynet`
-
-Docker creates:
-
-* A virtual bridge switch
-* A subnet
-* A gateway
-* A DNS system
-* Internal routing rules
+1. [What Is a Docker Network?](#-what-is-a-docker-network)
+2. [Creating a Network](#-creating-a-network)
+3. [Bridge Driver](#-bridge-driver)
+4. [Docker Internal DNS](#-docker-internal-dns)
+5. [Network Modes](#-network-modes)
+6. [Port Mapping vs Internal Networking](#-port-mapping-vs-internal-networking)
+7. [IPAM (IP Address Management)](#-ipam-ip-address-management)
+8. [Connecting Containers Across Networks](#-connecting-containers-across-networks)
 
 ---
 
-### Bridge Driver Use
+## 🤔 What Is a Docker Network?
 
-Docker creates a virtual Ethernet bridge—like a virtual LAN switch.
+A Docker network is a virtual private network created by Docker that enables container communication. It provides:
 
-#### Containers attached to the same bridge:
-
-* Can communicate
-* Get private IPs
-* Resolve names
-
-
-## Docker Internal DNS
-
-Containers can use container names directly to communicate.
-
-**Ex:**
-
-* `docker run --name db --network mynet postgres`
-* `docker run --name app --network mynet ubuntu`
-
-**Inside app container:**
-
-* `ping db` $\rightarrow$ works automatically
-
-Docker provides internal DNS resolution.
+* **Inter-container communication** — Containers on the same network can talk to each other
+* **Traffic isolation** — Containers on different networks are isolated by default
+* **Service exposure** — Containers can expose ports to the host machine
+* **DNS-based discovery** — Containers can find each other by name instead of IP address
 
 ```text
-frontend network → backend API → database network
-
+ _______________________________________________
+|           DOCKER NETWORK OVERVIEW             |
+|                                               |
+|   Without Network:                            |
+|   [ Container A ]    [ Container B ]          |
+|        (isolated - cannot communicate)        |
+|                                               |
+|   With Network:                               |
+|   [ Container A ] <--mynet--> [ Container B ] |
+|        (connected - can communicate)          |
+|_______________________________________________|
 ```
 
 ---
 
-* Containers on different bridge networks cannot directly communicate:
-* Unless explicitly connected
-* This provides network isolation
+## 🔧 Creating a Network
 
+```bash
+docker network create mynet
+```
 
+When Docker creates a network, it provisions:
 
-### Bridge Network (By default complete isolation)
-
-`docker run --network none ubuntu` $\rightarrow$ container gets:
-
-* No internet
-* No networking
-* **Complete isolation**
+* A virtual bridge switch
+* A subnet (e.g., `172.18.0.0/16`)
+* A gateway (e.g., `172.18.0.1`)
+* An internal DNS system
+* Internal routing rules
 
 ---
 
-`docker run --network host nginx` $\rightarrow$ container shares host network stack:
+## 🌉 Bridge Driver
 
-* No isolation
-* Containers directly use:
-* Host ports
-* Host interface
+Docker uses a **bridge** driver by default, which creates a virtual Ethernet bridge — similar to a virtual LAN switch.
 
+Containers attached to the same bridge network:
 
-## Container Port Mapping vs Network
+* Can communicate with each other directly
+* Receive private IP addresses from the subnet
+* Can resolve each other's names through Docker DNS
+
+> [!IMPORTANT]
+> Containers on **different** bridge networks **cannot** communicate directly. This provides network isolation by default. To allow cross-network communication, you must explicitly connect a container to the other network.
+
+---
+
+## 🔠 Docker Internal DNS
+
+Docker provides an internal DNS server that allows containers to use container names as hostnames for communication.
+
+**Example:**
+
+```bash
+docker run --name db --network mynet postgres
+docker run --name app --network mynet ubuntu
+```
+
+**Inside the `app` container:**
+
+```bash
+ping db    # Works automatically — Docker DNS resolves "db" to its IP address
+```
+
+```text
+ ___________________________________________________________
+|              DOCKER INTERNAL DNS RESOLUTION                |
+|                                                           |
+|   [ app container ]  -- ping db -->  [ DNS Server ]       |
+|                                          |                |
+|                                          v                |
+|                                   Resolves "db" to       |
+|                                   172.18.0.2             |
+|                                          |                |
+|                                          v                |
+|                                   [ db container ]       |
+|___________________________________________________________|
+```
+
+---
+
+## 🔒 Network Modes
+
+Docker supports three network modes, each providing a different level of isolation:
+
+### None Network (Complete Isolation)
+
+```bash
+docker run --network none ubuntu
+```
+
+The container receives:
+* No internet access
+* No network interface (except loopback)
+* **Complete network isolation**
+
+> [!NOTE]
+> Use this mode for security-sensitive workloads that should never communicate over a network.
+
+---
+
+### Host Network (No Isolation)
+
+```bash
+docker run --network host nginx
+```
+
+The container shares the host machine's network stack directly:
+* No network isolation between the container and host
+* The container uses the host's ports and interfaces directly
+* No port mapping is needed (`-p` flag is unnecessary)
+
+> [!WARNING]
+> Host networking removes the network isolation boundary. The container can access all network interfaces and ports on the host machine. Use with caution.
+
+---
+
+### Bridge Network (Default — Controlled Isolation)
+
+```bash
+docker run --network mynet nginx
+```
+
+The default mode. Containers get their own private network with controlled access to each other and the outside world.
+
+---
+
+## 🔌 Port Mapping vs Internal Networking
 
 ### Internal Container Communication
 
-* Uses:
+Containers on the same network communicate using:
 * Docker network
-* Container IP
-* Container DNS name
+* Container IP addresses
+* Container DNS names (container names)
 
-
-* **Ex:** `backend` $\rightarrow$ `postgres`
-
----
+*Example:* `backend` container connects to `postgres` container by name.
 
 ### External Host Access
 
-* Uses:
-* `-p 8080:80`
-* Host port 8080 $\rightarrow$ Container port 80
+External access from the host machine or a browser requires port mapping:
 
+```bash
+docker run -d -p 8080:80 nginx
+```
 
+* Host port `8080` → Container port `80`
 
-#### Architecture
-
-Browser $\rightarrow$ `localhost:8080` $\rightarrow$ Docker port mapping $\rightarrow$ `nginx` container $\rightarrow$ `backend` container $\rightarrow$ `postgres` container
+```text
+ ___________________________________________________________
+|              COMPLETE REQUEST FLOW                        |
+|                                                           |
+|   Browser --> localhost:8080 --> Docker port mapping       |
+|                                      |                    |
+|                                      v                    |
+|                               [ nginx container ]         |
+|                                      |                    |
+|                                      v                    |
+|                               [ backend container ]       |
+|                                      |                    |
+|                                      v                    |
+|                               [ postgres container ]      |
+|___________________________________________________________|
+```
 
 ---
 
-### IPAM
+## 📊 IPAM (IP Address Management)
 
-* IP Address Management
-* Docker automatically manages:
-* Subnet allocation
-* IP assignment
-* Gateways
+Docker automatically manages IP address allocation for containers:
 
-### Connecting containers on different bridge networks:
+* **Subnet allocation** — Each network gets its own subnet range
+* **IP assignment** — Each container receives a unique IP within the subnet
+* **Gateway configuration** — A gateway is created for external routing
 
-* Containers on different bridge networks are isolated by default.
-* To allow communication, you need to connect the container to the other network.
+---
+
+## 🔗 Connecting Containers Across Networks
+
+Containers on different bridge networks are isolated by default. To allow a container to communicate with containers on another network, connect it explicitly:
 
 ```bash
 docker run -d \
@@ -134,11 +218,20 @@ docker run -d \
   -p 80:80 \
   -v ${PWD}/nginx.conf:/etc/nginx/nginx.conf \
   nginx
-
 ```
 
-* **`--network login-app-default`** $\rightarrow$ Connects the nginx container to the `login-app-default` bridge network. This means nginx can now communicate with containers inside the `login-app-default` bridge network.
-* **`-p 80:80`** $\rightarrow$ Host:container. Browser traffic reaches the nginx container.
-* **`-v ${PWD}/nginx.conf:/etc/nginx/nginx.conf`** $\rightarrow$ We created a file on our local machine named `nginx.conf`, and now we have copied/mounted that file into the container.
-* **`nginx.conf`** $\rightarrow$ Custom nginx configuration.
+| Option | Purpose |
+|--------|---------|
+| `--network login-app-default` | Connects the nginx container to the `login-app-default` bridge network, enabling communication with containers on that network |
+| `-p 80:80` | Maps host port 80 to container port 80 for browser access |
+| `-v ${PWD}/nginx.conf:/etc/nginx/nginx.conf` | Mounts a custom nginx configuration file from the host into the container |
 
+---
+
+<div align="center">
+
+| ⬅️ Previous | 🏠 Home | Next ➡️ |
+|:---:|:---:|:---:|
+| [Docker Compose](./05-Docker-Compose.md) | [README](../README.md) | [Cross-Network Communication](./07-Cross-Network-Communication.md) |
+
+</div>
