@@ -91,6 +91,21 @@
 
 ## 🏷️ Image Tagging
 
+```text
+ _______________________________________________
+|              IMAGE TAGGING CONCEPT            |
+|                                               |
+|   nginx:latest ------+                        |
+|                      |                        |
+|                      +--->  IMAGE ID: a1b2c3  |
+|                      |      (same data)       |
+|   myregistry/  ------+                        |
+|   nginx:v1.0                                  |
+|                                               |
+|   Two tags, one image. No data is duplicated. |
+|_______________________________________________|
+```
+
 * **`docker image tag nginx myregistry/nginx:v1.0`** → Creates an additional reference (tag) pointing to the same image ID. Both the original and the new tag reference identical image data.
 
 **Common use cases for tagging:**
@@ -107,6 +122,25 @@
 ---
 
 ## 🔌 Port Mapping and Options
+
+```text
+ _______________________________________________
+|              PORT MAPPING FLOW                |
+|                                               |
+|   Browser                                     |
+|     |                                         |
+|     v                                         |
+|   localhost:8080  (Host Port)                 |
+|     |                                         |
+|     v  [Docker Network Layer]                 |
+|     |                                         |
+|     v                                         |
+|   container:80    (Container Port)            |
+|     |                                         |
+|     v                                         |
+|   [ nginx serving web page ]                  |
+|_______________________________________________|
+```
 
 ```bash
 docker run -d --name nginx -p 8080:80 nginx
