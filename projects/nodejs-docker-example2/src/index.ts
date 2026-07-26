@@ -40,7 +40,7 @@ pool
   .catch(console.error);
 
 app.get("/", (_req: Request, res: Response) => {
-  res.json({ message: "Hello World" });
+  res.json({ message: 'Hello World!!!' });
 });
 
 app.get("/health", (_req: Request, res: Response) => {
