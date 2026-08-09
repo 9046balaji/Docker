@@ -7,6 +7,12 @@ import express, { type Request, type Response } from "express";
 const app = express();
 const port = parseInt(process.env.PORT ?? "3000", 10);
 
+// Request logging middleware
+app.use((req, res, next) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
+  next();
+});
+
 app.get("/", (_req: Request, res: Response) => {
   res.json({ message: "Hello World" });
 });
