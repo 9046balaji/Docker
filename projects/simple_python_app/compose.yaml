@@ -1,7 +1,7 @@
-
 services:
   server:
     build:
       context: .
     ports:
-      - 8000:8000
+      - "8000:8000"
+    container_name: simple-python-app
